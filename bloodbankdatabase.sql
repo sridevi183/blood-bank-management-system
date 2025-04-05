@@ -1,6 +1,12 @@
+--- to create a database
+
 create database blood_bank_database;
 
+--- to activate the database
+
 use blood_bank_database;
+
+-- Table to store blood bank details
 
 CREATE TABLE blood_bank (
     bank_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -12,9 +18,10 @@ CREATE TABLE blood_bank (
     phone_number VARCHAR(10) UNIQUE NOT NULL,
     email VARCHAR(45) UNIQUE NOT NULL
 );
+-- Sample insert data for blood banks in Tamil Nadu
 
 INSERT INTO blood_bank (bank_name, address, city, state, pin_code, phone_number, email) VALUES
-('Red Cross Blood Bank', '123 Anna Salai', 'Chennai', 'Tamil Nadu', '600001', '9187654321', 'redcross_chennai@example.com'),
+('Red Cross Blood Bank', '123 Anna Salai', 'Chennai', 'Tamil Nadu', '600001', '9187658321', 'redcross_chennai@example.com'),
 ('Lifeline Blood Center', '56 Gandhi Road', 'Coimbatore', 'Tamil Nadu', '641001', '9198765432', 'lifeline_coimbatore@example.com'),
 ('Vital Blood Bank', '89 Mettupalayam Road', 'Madurai', 'Tamil Nadu', '625001', '9176543210', 'vital_madurai@example.com'),
 ('Hope Blood Bank', '21 NH Road', 'Trichy', 'Tamil Nadu', '620001', '9165432109', 'hope_trichy@example.com'),
@@ -45,6 +52,11 @@ INSERT INTO blood_bank (bank_name, address, city, state, pin_code, phone_number,
 ('Horizon Blood Bank', '19 Ooty Main Road', 'Nilgiris', 'Tamil Nadu', '643001', '8910987654', 'horizon_nilgiris@example.com'),
 ('Peak Blood Bank', '33 Temple Street', 'Tiruvannamalai', 'Tamil Nadu', '606601', '8909876543', 'peak_tiruvannamalai@example.com');
 
+-- Retrieve all blood banks along with their contact details and addresses.
+
+SELECT * FROM blood_bank;
+
+-- Table to store donor information
 
 CREATE TABLE donor (
     donor_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -61,6 +73,7 @@ CREATE TABLE donor (
     last_donation_date DATE,
     eligibility BOOLEAN DEFAULT TRUE
 );
+-- Insert sample donor data
 
 INSERT INTO donor (first_name, last_name, date_of_birth, gender, blood_type, address, city, state, pin_code, email, last_donation_date, eligibility) VALUES
 ('Arun', 'Kumar', '1990-05-12', 'Male', 'O+', '123 Anna Salai', 'Chennai', 'Tamil Nadu', '600001', 'arun.kumar@example.com', '2024-01-10', TRUE),
@@ -90,6 +103,12 @@ INSERT INTO donor (first_name, last_name, date_of_birth, gender, blood_type, add
 ('Ajay', 'Menon', '1987-12-17', 'Male', 'O+', '98 Central Road', 'Theni', 'Tamil Nadu', '625531', 'ajay.menon@example.com', '2024-01-12', TRUE),
 ('Swetha', 'Pillai', '1992-09-22', 'Female', 'A+', '67 Main Bazaar', 'Ramanathapuram', 'Tamil Nadu', '623501', 'swetha.pillai@example.com', '2023-11-28', TRUE);
 
+-- Retrieve all donors including personal details, blood type, contact info, and donation eligibility.
+
+SELECT * FROM donor;
+
+-- Table to store blood units available at each blood bank
+
 CREATE TABLE blood_inventory (
     inventory_id INT PRIMARY KEY AUTO_INCREMENT,
     bank_id INT NOT NULL,
@@ -100,6 +119,7 @@ CREATE TABLE blood_inventory (
     CONSTRAINT fk_bank_id1 foreign key (bank_id)
     REFERENCES blood_bank(bank_id) ON DELETE CASCADE
 );
+-- Sample insert into blood_inventory
 
 INSERT INTO blood_inventory (bank_id, blood_type, quantity, donation_date, expiry_date) VALUES
 (1, 'O+', 10, '2024-03-01', '2024-06-01'),
@@ -133,6 +153,11 @@ INSERT INTO blood_inventory (bank_id, blood_type, quantity, donation_date, expir
 (29, 'O-', 10, '2024-03-29', '2024-06-29'),
 (30, 'B-', 8, '2024-03-30', '2024-06-30');
 
+-- Retrieve all blood inventory entries, showing quantity and availability by blood type and expiry date at each bank.
+
+SELECT * FROM blood_inventory;
+
+-- Table to record each donation
 
 CREATE TABLE donation (
     donation_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -147,6 +172,7 @@ CREATE TABLE donation (
     CONSTRAINT fk_bank_id2 foreign key (bank_id)
     REFERENCES blood_bank(bank_id) ON DELETE CASCADE
 );
+-- Sample insert into donation table
 
 INSERT INTO donation (donor_id, bank_id, donation_date, blood_type, quantity, screening_results) VALUES
 (1, 1, '2024-03-01', 'O+', 1, 'Passed'),
@@ -174,12 +200,13 @@ INSERT INTO donation (donor_id, bank_id, donation_date, blood_type, quantity, sc
 (23, 23, '2024-03-23', 'A+', 1, 'Passed'),
 (24, 24, '2024-03-24', 'AB-', 1, 'Passed'),
 (25, 25, '2024-03-25', 'O+', 1, 'Passed'),
-(26, 26, '2024-03-26', 'A-', 1, 'Passed'),
-(27, 27, '2024-03-27', 'B+', 1, 'Passed'),
-(28, 28, '2024-03-28', 'AB+', 1, 'Passed'),
-(29, 29, '2024-03-29', 'O-', 1, 'Passed'),
-(30, 30, '2024-03-30', 'B-', 1, 'Passed');
+(26, 26, '2024-03-26', 'A-', 1, 'Passed');
 
+-- Retrieve all donation records including donor, bank, donation date, blood type, quantity, and screening results.
+
+SELECT * FROM donation;
+
+-- Table to store recipient details
 
 CREATE TABLE recipient (
     recipient_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -196,6 +223,7 @@ CREATE TABLE recipient (
     email VARCHAR(45) UNIQUE NOT NULL,
     medical_history TEXT
 );
+-- Sample insert into recipient table
 
 INSERT INTO recipient (first_name, last_name, date_of_birth, gender, blood_type, address, city, state, pin_code, phone_number, email, medical_history) VALUES
 ('Arun', 'Kumar', '1985-06-15', 'Male', 'O+', '12 Gandhi Road', 'Chennai', 'Tamil Nadu', '600001', '9876543210', 'arun.kumar@example.com', 'Diabetes'),
@@ -227,6 +255,12 @@ INSERT INTO recipient (first_name, last_name, date_of_birth, gender, blood_type,
 ('Saravanan', 'Kumar', '1980-02-09', 'Male', 'B+', '67 Gandhi Street', 'Vellore', 'Tamil Nadu', '632003', '9876543236', 'saravanan.kumar@example.com', 'Thyroid issues'),
 ('Indira', 'Muthukumar', '1978-10-15', 'Female', 'AB+', '99 MG Road', 'Dindigul', 'Tamil Nadu', '624003', '9876543237', 'indira.muthukumar@example.com', 'Heart condition');
 
+-- Retrieve all blood recipients including personal, medical, and contact details.
+
+SELECT * FROM recipient;
+
+-- Table to store requests made by recipients for blood
+
 CREATE TABLE blood_request (
     request_id INT PRIMARY KEY AUTO_INCREMENT,
     recipient_id INT NOT NULL,
@@ -240,9 +274,9 @@ CREATE TABLE blood_request (
     CONSTRAINT fk_bank_id3 FOREIGN KEY (bank_id)
     REFERENCES blood_bank(bank_id) ON DELETE CASCADE
 );
+-- Sample insert into blood_request table
 
 INSERT INTO blood_request (recipient_id, bank_id, request_date, blood_type, quantity, status) VALUES
-(1, 1, '2024-03-01', 'O+', 2, 'Pending'),
 (2, 2, '2024-03-02', 'A-', 1, 'Approved'),
 (3, 3, '2024-03-03', 'B+', 3, 'Pending'),
 (4, 4, '2024-03-04', 'AB+', 2, 'Rejected'),
@@ -269,9 +303,13 @@ INSERT INTO blood_request (recipient_id, bank_id, request_date, blood_type, quan
 (25, 25, '2024-03-25', 'O+', 1, 'Approved'),
 (26, 26, '2024-03-26', 'A-', 2, 'Pending'),
 (27, 27, '2024-03-27', 'B+', 3, 'Approved'),
-(28, 28, '2024-03-28', 'AB+', 2, 'Pending'),
-(29, 29, '2024-03-29', 'O-', 1, 'Rejected'),
-(30, 30, '2024-03-30', 'B-', 2, 'Pending');
+(28, 28, '2024-03-28', 'AB+', 2, 'Pending');
+
+-- Retrieve all blood requests made by recipients, along with the requested quantity, blood type, date, and status.
+
+SELECT * FROM blood_request;
+
+-- Table to record transfusions based on requests and inventory
 
 CREATE TABLE blood_transfusion (
     transfusion_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -284,35 +322,330 @@ CREATE TABLE blood_transfusion (
     CONSTRAINT fk_inventory_id FOREIGN KEY (inventory_id)
         REFERENCES blood_inventory(inventory_id) ON DELETE CASCADE
 );
+-- Sample insert into blood_transfusion table
 
 INSERT INTO blood_transfusion (request_id, inventory_id, transfusion_date, quantity_transfused) VALUES
-(1, 5, '2024-03-05', 2),
-(2, 8, '2024-03-06', 1),
-(3, 12, '2024-03-07', 3),
-(4, 15, '2024-03-08', 2),
-(5, 18, '2024-03-09', 1),
-(6, 21, '2024-03-10', 2),
-(7, 25, '2024-03-11', 1),
-(8, 28, '2024-03-12', 3),
-(9, 30, '2024-03-13', 2),
-(10, 2, '2024-03-14', 1),
-(11, 4, '2024-03-15', 2),
-(12, 6, '2024-03-16', 3),
-(13, 9, '2024-03-17', 1),
-(14, 11, '2024-03-18', 2),
-(15, 14, '2024-03-19', 1),
-(16, 16, '2024-03-20', 3),
-(17, 19, '2024-03-21', 2),
-(18, 22, '2024-03-22', 1),
-(19, 24, '2024-03-23', 3),
-(20, 26, '2024-03-24', 2),
-(21, 29, '2024-03-25', 1),
-(22, 1, '2024-03-26', 2),
-(23, 3, '2024-03-27', 3),
-(24, 7, '2024-03-28', 2),
-(25, 10, '2024-03-29', 1),
-(26, 13, '2024-03-30', 3),
-(27, 17, '2024-03-31', 2),
-(28, 20, '2024-04-01', 1),
-(29, 23, '2024-04-02', 3),
-(30, 27, '2024-04-03', 2);
+(121, 5, '2024-03-05', 2),
+(122, 8, '2024-03-06', 1),
+(123, 12, '2024-03-07', 3),
+(124, 15, '2024-03-08', 2),
+(125, 18, '2024-03-09', 1),
+(126, 21, '2024-03-10', 2),
+(127, 25, '2024-03-11', 1),
+(128, 28, '2024-03-12', 3),
+(129, 30, '2024-03-13', 2),
+(130, 2, '2024-03-14', 1),
+(131, 4, '2024-03-15', 2),
+(132, 6, '2024-03-16', 3),
+(133, 9, '2024-03-17', 1),
+(134, 11, '2024-03-18', 2),
+(135, 14, '2024-03-19', 1),
+(136, 16, '2024-03-20', 3),
+(137, 19, '2024-03-21', 2),
+(138, 22, '2024-03-22', 1),
+(139, 24, '2024-03-23', 3),
+(140, 26, '2024-03-24', 2),
+(141, 29, '2024-03-25', 1),
+(142, 1, '2024-03-26', 2),
+(143, 3, '2024-03-27', 3),
+(144, 7, '2024-03-28', 2),
+(145, 10, '2024-03-29', 1),
+(146, 13, '2024-03-30', 3),
+(147, 17, '2024-03-31', 2),
+(148, 20, '2024-04-01', 1);
+
+-- Retrieve all transfusion records showing which blood request was fulfilled from which inventory, and the quantity transfused.
+
+SELECT * FROM blood_transfusion;
+
+----AddDonor------
+
+DELIMITER //
+CREATE PROCEDURE AddDonor(
+    IN f_name VARCHAR(45),
+    IN l_name VARCHAR(45),
+    IN dob DATE,
+    IN gen VARCHAR(10),
+    IN btype VARCHAR(5),
+    IN addr VARCHAR(60),
+    IN city VARCHAR(45),
+    IN state VARCHAR(45),
+    IN pin VARCHAR(10),
+    IN email VARCHAR(45)
+)
+BEGIN
+    INSERT INTO donor(first_name, last_name, date_of_birth, gender, blood_type, address, city, state, pin_code, email)
+    VALUES (f_name, l_name, dob, gen, btype, addr, city, state, pin, email);
+END //
+DELIMITER ;
+
+-- Call procedure to add a donor
+
+CALL AddDonor(
+  'Ravi', 'Kumar', '1990-05-10', 'Male', 'A+', 
+  '123 Main Street', 'Chennai', 'Tamil Nadu', '600001', 
+  'ravi.kumar@example.com'
+);
+DELIMITER $$
+
+CREATE PROCEDURE AddBloodRequest(
+    IN r_id INT,
+    IN b_id INT,
+    IN r_date DATE,
+    IN b_type VARCHAR(5),
+    IN qty INT
+)
+BEGIN
+    INSERT INTO blood_request (recipient_id, bank_id, request_date, blood_type, quantity)
+    VALUES (r_id, b_id, r_date, b_type, qty);
+END $$
+DELIMITER ;
+
+-- Call procedure to add a blood request
+
+CALL AddBloodRequest(1, 1, '2024-04-01', 'O+', 2);
+
+DELIMITER $$
+CREATE PROCEDURE UpdateRequestStatus(
+    IN req_id INT,
+    IN new_status VARCHAR(20)
+)
+BEGIN
+    UPDATE blood_request
+    SET status = new_status
+    WHERE request_id = req_id;
+END $$
+DELIMITER ;
+
+-- Call procedure to update status of request_id 1 to 'Approved'
+
+CALL UpdateRequestStatus(1, 'Approved');
+
+DELIMITER $$
+CREATE PROCEDURE GetDonorHistory(
+    IN d_id INT
+)
+BEGIN
+    SELECT * FROM donation
+    WHERE donor_id = d_id;
+END $$
+DELIMITER ;
+
+-- Call procedure to fetch donation history of donor_id 1
+
+CALL GetDonorHistory(1);
+
+DELIMITER $$
+CREATE PROCEDURE CheckInventoryByBloodType(
+    IN b_id INT,
+    IN b_type VARCHAR(5)
+)
+BEGIN
+    SELECT * FROM blood_inventory
+    WHERE bank_id = b_id AND blood_type = b_type;
+END $$
+DELIMITER ;
+
+-- Call procedure to check inventory of O+ blood in bank_id 1
+
+CALL CheckInventoryByBloodType(1, 'O+');
+
+DELIMITER $$
+CREATE PROCEDURE AddDonation(
+    IN d_id INT,
+    IN b_id INT,
+    IN d_date DATE,
+    IN b_type VARCHAR(5),
+    IN qty INT,
+    IN results VARCHAR(45)
+)
+BEGIN
+    INSERT INTO donation(donor_id, bank_id, donation_date, blood_type, quantity, screening_results)
+    VALUES (d_id, b_id, d_date, b_type, qty, results);
+END $$
+DELIMITER ;
+
+-- Call procedure to add donation from donor_id 1 to bank_id 1
+
+CALL AddDonation(8, 1, '2024-04-01', 'O+', 2, 'Passed');
+
+DELIMITER $$
+CREATE PROCEDURE AddBloodInventory(
+    IN b_id INT,
+    IN b_type VARCHAR(5),
+    IN qty INT,
+    IN donate_date DATE,
+    IN expire_date DATE
+)
+BEGIN
+    INSERT INTO blood_inventory(bank_id, blood_type, quantity, donation_date, expiry_date)
+    VALUES (b_id, b_type, qty, donate_date, expire_date);
+END $$
+DELIMITER ;
+
+-- Call procedure to add blood inventory to bank_id 1
+
+CALL AddBloodInventory(1, 'O+', 5, '2024-04-01', '2024-05-01');
+
+DELIMITER $$
+CREATE PROCEDURE ApproveRequestAndReduceInventory(
+    IN req_id INT,
+    IN inv_id INT,
+    IN transfused_qty INT
+)
+BEGIN
+    UPDATE blood_request
+    SET status = 'Approved'
+    WHERE request_id = req_id;
+
+    UPDATE blood_inventory
+    SET quantity = quantity - transfused_qty
+    WHERE inventory_id = inv_id;
+END $$
+DELIMITER ;
+
+-- Call procedure to approve request_id 1 and reduce 2 units from inventory_id 1
+
+CALL ApproveRequestAndReduceInventory(1, 1, 2);
+
+DELIMITER $$
+CREATE PROCEDURE GetRecipientDetails(
+    IN r_id INT
+)
+BEGIN
+    SELECT * FROM recipient WHERE recipient_id = r_id;
+END $$
+DELIMITER ;
+
+-- Call procedure to get details of recipient_id 1
+
+CALL GetRecipientDetails(1);
+
+DELIMITER $$
+CREATE PROCEDURE AddTransfusionRecord(
+    IN r_id INT,
+    IN inv_id INT,
+    IN t_date DATE,
+    IN qty INT
+)
+BEGIN
+    INSERT INTO blood_transfusion(request_id, inventory_id, transfusion_date, quantity_transfused)
+    VALUES (r_id, inv_id, t_date, qty);
+END $$
+DELIMITER ;
+
+-- Call procedure to add transfusion record for request_id 1 and inventory_id 1
+
+CALL AddTransfusionRecord(1, 1, '2024-04-02', 2);
+
+-- Procedure to get total quantity of a specific blood type in a specific bank
+
+DELIMITER //
+CREATE PROCEDURE get_blood_quantity(
+    IN p_bank_id INT,
+    IN p_blood_type VARCHAR(5),
+    OUT p_total_quantity INT
+)
+BEGIN
+    SELECT SUM(quantity)
+    INTO p_total_quantity
+    FROM blood_inventory
+    WHERE bank_id = p_bank_id AND blood_type = p_blood_type;
+END //
+DELIMITER ;
+
+CALL get_blood_quantity(1, 'O+', @qty);
+SELECT @qty AS total_quantity;
+
+-- Procedure to fetch recipient full name and blood type
+
+DELIMITER //
+CREATE PROCEDURE get_recipient_info(
+    IN p_recipient_id INT,
+    OUT p_name VARCHAR(100),
+    OUT p_blood_type VARCHAR(5)
+)
+BEGIN
+    SELECT CONCAT(first_name, ' ', last_name), blood_type
+    INTO p_name, p_blood_type
+    FROM recipient
+    WHERE recipient_id = p_recipient_id;
+END //
+DELIMITER ;
+
+CALL get_recipient_info(3, @name, @type);
+SELECT @name AS full_name, @type AS blood_type;
+
+-- View to show total blood available by bank and blood type
+
+CREATE VIEW view_available_blood AS
+SELECT 
+    bb.bank_name,
+    bi.blood_type,
+    SUM(bi.quantity) AS total_units,
+    bi.expiry_date
+FROM blood_inventory bi
+JOIN blood_bank bb ON bi.bank_id = bb.bank_id
+GROUP BY bb.bank_name, bi.blood_type, bi.expiry_date
+ORDER BY bb.bank_name, bi.blood_type;
+
+-- View to show recent donations with donor and bank details
+
+CREATE VIEW view_recent_donations AS
+SELECT 
+    d.donation_id,
+    CONCAT(r.first_name, ' ', r.last_name) AS donor_name,
+    b.bank_name,
+    d.blood_type,
+    d.donation_date,
+    d.quantity,
+    d.screening_results
+FROM donation d
+JOIN donor r ON d.donor_id = r.donor_id
+JOIN blood_bank b ON d.bank_id = b.bank_id
+ORDER BY d.donation_date DESC;
+
+-- View to display pending blood requests
+
+CREATE VIEW view_pending_requests AS
+SELECT 
+    br.request_id,
+    CONCAT(r.first_name, ' ', r.last_name) AS recipient_name,
+    bb.bank_name,
+    br.blood_type,
+    br.quantity,
+    br.request_date,
+    br.status
+FROM blood_request br
+JOIN recipient r ON br.recipient_id = r.recipient_id
+JOIN blood_bank bb ON br.bank_id = bb.bank_id
+WHERE br.status = 'Pending'
+ORDER BY br.request_date DESC;
+
+-- View to display transfusion history details
+
+CREATE VIEW view_transfusion_history AS
+SELECT 
+    bt.transfusion_id,
+    CONCAT(rc.first_name, ' ', rc.last_name) AS recipient_name,
+    bb.bank_name,
+    bi.blood_type,
+    bt.quantity_transfused,
+    bt.transfusion_date
+FROM blood_transfusion bt
+JOIN blood_request br ON bt.request_id = br.request_id
+JOIN recipient rc ON br.recipient_id = rc.recipient_id
+JOIN blood_inventory bi ON bt.inventory_id = bi.inventory_id
+JOIN blood_bank bb ON bi.bank_id = bb.bank_id
+ORDER BY bt.transfusion_date DESC;
+
+
+
+
+
+
+
+
+
+
+
